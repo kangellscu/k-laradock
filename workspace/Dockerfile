@@ -39,7 +39,7 @@ ENV PGID ${PGID}
 
 # always run apt update when start and after add new source list, then clean up at end.
 RUN set -xe; \
-    apt-get update -yqq && \
+    apt update && apt-get update -yqq && \
     pecl channel-update pecl.php.net && \
     groupadd -g ${PGID} laradock && \
     useradd -u ${PUID} -g laradock -m laradock -G docker_env && \
@@ -865,10 +865,16 @@ RUN if [ ${INSTALL_SYMFONY} = true ]; then \
 
 ARG INSTALL_PYTHON=false
 
+# Command: apt-get install software-properties-common
+#   for installing add-apt-repository command
 RUN if [ ${INSTALL_PYTHON} = true ]; then \
-  apt-get -y install python python-pip python-dev build-essential  \
+  apt-get -y install software-properties-common \
+  && add-apt-repository -y ppa:jonathonf/python-3.6 \
+  && apt-get update \
+  && apt-get -y install python3.6 python3-pip python3.6-dev python3.6-venv build-essential  \
+  && rm -f /usr/bin/python && ln -s /usr/bin/python3.6 /usr/bin/python \
   && python -m pip install --upgrade pip  \
-  && python -m pip install --upgrade virtualenv \
+  && rm -f /usr/local/bin/pip && ln -s /usr/local/bin/pip3.6 /usr/bin/pip \
 ;fi
 
 ###########################################################################
@@ -882,7 +888,7 @@ RUN if [ ${INSTALL_POWERLINE} = true ]; then \
     if [ ${INSTALL_PYTHON} = true ]; then \
     python -m pip install --upgrade powerline-status && \
     echo "" >> /etc/bash.bashrc && \
-    echo ". /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh" >> /etc/bash.bashrc \
+    echo ". /usr/local/lib/python$(python --version | awk '{print $2}' | awk -F. '{print $1"."$2}')/dist-packages/powerline/bindings/bash/powerline.sh" >> /etc/bash.bashrc \
   ;fi \
 ;fi
 
