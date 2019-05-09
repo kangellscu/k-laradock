@@ -8,10 +8,11 @@ services:
             dockerfile: Dockerfile
             args:
                 - SPARK_VERSION=${SPARK_VERSION}
+        volumes:
+            - ${DATA_PATH_HOST}/spark-master:/data/data
         ports:
             - "${SPARK_MASTER_HTTP_PORT}:8080"
             - "${SPARK_MASTER_API_PORT}:7077"
-            - "${SPARK_MASTER_UI_PORT}:4040"
         environment:
             - INIT_DAEMON_STEP=setup_spark
             - PYSPARK_PYTHON=python3.6
