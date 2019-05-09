@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+    
+    spark-master:
+        build:
+            context: ./spark
+            dockerfile: Dockerfile
+            args:
+                - SPARK_VERSION=${SPARK_VERSION}
+        ports:
+            - "${SPARK_MASTER_HTTP_PORT}:8080"
+            - "${SPARK_MASTER_API_PORT}:7077"
+        environment:
+            - INIT_DAEMON_STEP=setup_spark
+            - PYSPARK_PYTHON=python3.6
+
+    spark-worker-1:
+        build:
+            context: ./spark
+            dockerfile: Dockerfile-worker
+            args:
+                - SPARK_VERSION=${SPARK_VERSION}
+        depends_on:
+            - spark-master
+        ports:
+            - "${SPARK_WORKER_HTTP_PORT}:8081"
+        environment:
+            - SPARK_MASTER=spark://spark-master:7077
