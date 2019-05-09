@@ -16,6 +16,8 @@ services:
         environment:
             - INIT_DAEMON_STEP=setup_spark
             - PYSPARK_PYTHON=python3.6
+        depends_on:
+            - nginx
         networks:
             - backend
 
