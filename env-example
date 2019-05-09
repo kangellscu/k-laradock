@@ -676,3 +676,14 @@ MANTICORE_HTTP_PORT=9308
 PGADMIN_PORT=5050
 PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
 PGADMIN_DEFAULT_PASSWORD=admin
+
+##########################################
+# Big Data
+##########################################
+
+### Spark ####################################################
+
+SPARK_VERSION=2.4.0-hadoop2.7
+SPARK_MASTER_API_PORT=11001
+SPARK_MASTER_HTTP_PORT=11011
+SPARK_WORKER_HTTP_PORT=11021
