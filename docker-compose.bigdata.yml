@@ -11,9 +11,12 @@ services:
         ports:
             - "${SPARK_MASTER_HTTP_PORT}:8080"
             - "${SPARK_MASTER_API_PORT}:7077"
+            - "${SPARK_MASTER_UI_PORT}:4040"
         environment:
             - INIT_DAEMON_STEP=setup_spark
             - PYSPARK_PYTHON=python3.6
+        networks:
+            - backend
 
     spark-worker-1:
         build:
@@ -27,3 +30,5 @@ services:
             - "${SPARK_WORKER_HTTP_PORT}:8081"
         environment:
             - SPARK_MASTER=spark://spark-master:7077
+        networks:
+            - backend
