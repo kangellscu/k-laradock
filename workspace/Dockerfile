@@ -64,6 +64,12 @@ RUN set -xe; \
       nasm && \
       php -m | grep -q 'zip'
 
+
+############################
+#   Vimrc
+############################
+COPY ./vimrc /etc/vim/vimrc.local
+
 #
 #--------------------------------------------------------------------------
 # Optional Software's Installation
