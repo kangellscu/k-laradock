@@ -44,6 +44,7 @@ RUN set -xe; \
     groupadd -g ${PGID} laradock && \
     useradd -u ${PUID} -g laradock -m laradock -G docker_env && \
     usermod -p "*" laradock -s /bin/bash && \
+    apt-get install -yqq net-tools iputils-ping && \
     apt-get install -yqq \
       apt-utils \
       #
@@ -416,6 +417,7 @@ RUN if [ ${INSTALL_AMQP} = true ]; then \
 ARG INSTALL_PHPREDIS=false
 
 RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
+    apt-get update -yqq && \
     apt-get install -yqq php-redis \
 ;fi
 
